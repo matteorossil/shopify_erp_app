@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update App</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', function() {
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            
+            document.getElementById('updateCatalogButton').addEventListener('click', function() {
+                logsBox.textContent = '';
+                socket.emit('trigger_update_catalog');
+            });
+
+            document.getElementById('updateStockButton').addEventListener('click', function() {
+                logsBox.textContent = '';
+                socket.emit('trigger_update_stock');
+            });
+
+            document.getElementById('updatePriceButton').addEventListener('click', function() {
+                logsBox.textContent = '';
+                socket.emit('trigger_update_price');
+            });
+    
+            socket.on('message', function(msg) {
+                var logsBox = document.getElementById('logsBox');
+                // Use 'msg.data' to access the actual message content
+                logsBox.textContent += msg.data; // Append the message and a newline for better readability
+                console.log(msg.data); // Log the actual message content for debugging
+            });
+        });
+    </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header-logo">
+                <img  src="../static/fratelli-rossi-logo.png" alt="Fratelli Rossi Logo">
+            </div>
+            <button id="updateCatalogButton" class="large-button">Update Catalog</button>
+            <button id="updateStockButton" class="large-button">Update Stock</button>
+            <button id="updatePriceButton" class="large-button">Update Prices</button>
+            <div id="logsBox" class="logs-box"></div>
+        </div>
+    </body>
+</html>
